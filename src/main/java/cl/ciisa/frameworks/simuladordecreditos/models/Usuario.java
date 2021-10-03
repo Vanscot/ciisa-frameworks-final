@@ -6,31 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.*;
-
 
 @Entity
 @Table( name="USUARIOS" )
 public class Usuario {
-	public Usuario() {
-		
-	}
-	public Usuario(Long id, Long rut, String nombre, String apellido1, String apellido2, String calle, String comuna,
-			String fechaNacimiento, String genero, String password, String email, int nivel) {
-		super();
-		this.id = id;
-		this.rut = rut;
-		this.nombre = nombre;
-		this.apellido1 = apellido1;
-		this.apellido2 = apellido2;
-		this.calle = calle;
-		this.comuna = comuna;
-		this.fechaNacimiento = fechaNacimiento;
-		this.genero = genero;
-		this.password = password;
-		this.email = email;
-		this.nivel = nivel;
-	}
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
@@ -56,7 +35,27 @@ public class Usuario {
 	private String email = null;
 	@Column( name="USU_NIVEL" )
 	private int    nivel = 0;
+	public Usuario() {
+		
+	}
+	public Usuario(Long id, Long rut, String nombre, String apellido1, String apellido2, String calle, String comuna,
+			String fechaNacimiento, String genero, String password, String email, int nivel) {
+		super();
+		this.id = id;
+		this.rut = rut;
+		this.nombre = nombre;
+		this.apellido1 = apellido1;
+		this.apellido2 = apellido2;
+		this.calle = calle;
+		this.comuna = comuna;
+		this.fechaNacimiento = fechaNacimiento;
+		this.genero = genero;
+		this.password = password;
+		this.email = email;
+		this.nivel = nivel;
+	}
 	public char dv() {
+		if( rut == null ) return (char) 0;
 		int m = 0, s = 1;
 		for (; rut != 0; rut /= 10) {
 			s = (int) ((s + rut % 10 * (9 - m++ % 6)) % 11);

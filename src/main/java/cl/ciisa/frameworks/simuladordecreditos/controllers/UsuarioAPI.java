@@ -22,6 +22,21 @@ public class UsuarioAPI {
 	@Autowired
 	UsuarioRepository link;
 
+	private void addAdmin() {
+		Usuario usuario = new Usuario();
+		usuario.setNombre( "Admin" );
+		usuario.setApellido1( "" );
+		usuario.setApellido2( "" );
+		usuario.setCalle( "" );
+		usuario.setComuna( "" );
+		usuario.setFechaNacimiento( "" );
+		usuario.setGenero( "" );
+		usuario.setPassword( "holasoyadmin" );
+		usuario.setEmail( "admin@localhost" );
+		usuario.setNivel( 2 );
+		link.save( usuario );
+	}
+	
 	@RequestMapping( value="/", method=RequestMethod.GET )
 	public List<Usuario> getUsuarios() {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
@@ -29,6 +44,13 @@ public class UsuarioAPI {
 			if( usuario.getNivel() < 1 ) continue;
 			if( usuario.getId() == 1 ) usuario.setPassword( "" );
 			usuarios.add( usuario );
+		}
+		if( usuarios.size() < 1 ) {
+			addAdmin();//No hay usuarios, creamos el admin
+			Optional<Usuario> result = link.findById( (long) 1 );
+			Usuario admin = result.get();
+			admin.setPassword( "" );
+			usuarios.add( admin );
 		}
 		
 		return usuarios;
@@ -51,6 +73,7 @@ public class UsuarioAPI {
 		if( ! result.isPresent() ) return new Usuario();
 		Usuario usuario = result.get();
 		JSONObject usuarioParsed = new JSONObject( usuarioJSON );
+		if( usuarioParsed.has( "rut" ) ) usuario.setRut( usuarioParsed.getLong( "rut" ) );
 		if( usuarioParsed.has( "nombre" ) ) usuario.setNombre( usuarioParsed.getString( "nombre" ) );
 		if( usuarioParsed.has( "apellido1" ) ) usuario.setApellido1( usuarioParsed.getString( "apellido1" ) );
 		if( usuarioParsed.has( "apellido2" ) ) usuario.setApellido2( usuarioParsed.getString( "apellido2" ) );
@@ -67,9 +90,12 @@ public class UsuarioAPI {
 	
 	@RequestMapping( value="/usuario", method=RequestMethod.POST )
 	public Usuario newUsuario( @RequestBody Usuario usuarioJSON ) {
+		Optional<Usuario> result = link.findById( (long) 1 );
+		if( ! result.isPresent() ) addAdmin(); //No hay usuarios, creamos el admin
 		System.out.print( usuarioJSON );
 		Usuario usuario = new Usuario();
 		JSONObject usuarioParsed = new JSONObject( usuarioJSON );
+		if( usuarioParsed.has( "rut" ) ) usuario.setRut( usuarioParsed.getLong( "rut" ) );
 		if( usuarioParsed.has( "nombre" ) ) usuario.setNombre( usuarioParsed.getString( "nombre" ) );
 		if( usuarioParsed.has( "apellido1" ) ) usuario.setApellido1( usuarioParsed.getString( "apellido1" ) );
 		if( usuarioParsed.has( "apellido2" ) ) usuario.setApellido2( usuarioParsed.getString( "apellido2" ) );

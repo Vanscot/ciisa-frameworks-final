@@ -2,6 +2,9 @@ package cl.ciisa.frameworks.simuladordecreditos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import cl.ciisa.frameworks.simuladordecreditos.repository.UsuarioRepository;
 
 @SpringBootApplication
 public class AdministradorDeCreditosApplication {

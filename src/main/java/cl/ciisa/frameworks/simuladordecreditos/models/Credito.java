@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import java.util.List;
-
 @Entity
 @Table( name="CREDITOS" )
 public class Credito {
@@ -27,4 +25,59 @@ public class Credito {
 	private String tipo = null;
 	@Column( name="CRE_SEGUROS" )
 	private Long   seguros = null;
+	public Credito() {
+		
+	}
+	public Credito(Long id, Long rut, String nombre, Long monto, float tasa, String tipo, Long seguros) {
+		super();
+		this.id = id;
+		this.rut = rut;
+		this.nombre = nombre;
+		this.monto = monto;
+		this.tasa = tasa;
+		this.tipo = tipo;
+		this.seguros = seguros;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getRut() {
+		return rut;
+	}
+	public void setRut(Long rut) {
+		this.rut = rut;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Long getMonto() {
+		return monto;
+	}
+	public void setMonto(Long monto) {
+		this.monto = monto;
+	}
+	public float getTasa() {
+		return tasa;
+	}
+	public void setTasa(float tasa) {
+		this.tasa = tasa;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public Long getSeguros() {
+		return seguros;
+	}
+	public void setSeguros(Long seguros) {
+		this.seguros = seguros;
+	}
 }
