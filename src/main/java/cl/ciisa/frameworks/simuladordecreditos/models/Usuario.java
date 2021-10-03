@@ -1,11 +1,15 @@
 package cl.ciisa.frameworks.simuladordecreditos.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 
 @Entity
 @Table( name="USUARIOS" )
@@ -35,6 +39,10 @@ public class Usuario {
 	private String email = null;
 	@Column( name="USU_NIVEL" )
 	private int    nivel = 0;
+	@Transient
+	private String dv;
+	@Transient
+	private List<Credito> creditos = null;
 	public Usuario() {
 		
 	}
@@ -54,13 +62,12 @@ public class Usuario {
 		this.email = email;
 		this.nivel = nivel;
 	}
-	public char dv() {
-		if( rut == null ) return (char) 0;
+	public String calculaDigitoVerificador( long rut ) {
 		int m = 0, s = 1;
 		for (; rut != 0; rut /= 10) {
 			s = (int) ((s + rut % 10 * (9 - m++ % 6)) % 11);
 		}
-		return (char) (s != 0 ? s + 47 : 75) ;
+		return ( (char) (s != 0 ? s + 47 : 75) ) + "";
 	}
 	public Long getId() {
 		return id;
@@ -134,11 +141,23 @@ public class Usuario {
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 	}
+	public String getDv() {
+		return calculaDigitoVerificador( this.rut );
+	}
+	public void setDv( char d ) {
+		this.dv = calculaDigitoVerificador( this.rut );
+	}
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2="
 				+ apellido2 + ", calle=" + calle + ", comuna=" + comuna + ", fechaNacimiento=" + fechaNacimiento
 				+ ", genero=" + genero + ", password=" + password + ", email=" + email + ", nivel=" + nivel + "]";
+	}
+	public List<Credito> getCreditos() {
+		return creditos;
+	}
+	public void setCreditos(List<Credito> creditos) {
+		this.creditos = creditos;
 	}
 
 }

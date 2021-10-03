@@ -1,11 +1,14 @@
 package cl.ciisa.frameworks.simuladordecreditos.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table( name="CREDITOS" )
@@ -25,6 +28,9 @@ public class Credito {
 	private String tipo = null;
 	@Column( name="CRE_SEGUROS" )
 	private Long   seguros = null;
+	@Transient
+	private List<Cuota> cuotas = null;
+	
 	public Credito() {
 		
 	}
@@ -79,5 +85,11 @@ public class Credito {
 	}
 	public void setSeguros(Long seguros) {
 		this.seguros = seguros;
+	}
+	public List<Cuota> getCuotas() {
+		return cuotas;
+	}
+	public void setCuotas(List<Cuota> cuotas) {
+		this.cuotas = cuotas;
 	}
 }
