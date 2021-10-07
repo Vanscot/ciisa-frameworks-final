@@ -5,22 +5,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table( name="LIQUIDACIONES" )
+@Table( name="liquidacion" )
 public class Liquidacion {
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
-	@Column( name="LIQ_RUT" )
+	@Column( name="liq_rut" )
 	private Long   rut = null;
-	@Column( name="LIQ_ANO" )
+	@Column( name="liq_ano" )
 	private int    ano = 0;
-	@Column( name="LIQ_MES" )
+	@Column( name="liq_mes" )
 	private int    mes = 0;
-	@Column( name="LIQ_MONTO" )
+	@Column( name="liq_monto" )
 	private Long   monto = null;
+	@ManyToOne
+	@JoinColumn( name="cli_id" )
+	private Cliente cliente;
+	
 	public Liquidacion() {
 		
 	}

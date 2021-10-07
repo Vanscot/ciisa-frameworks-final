@@ -1,53 +1,59 @@
 package cl.ciisa.frameworks.simuladordecreditos.models;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
 @Entity
-@Table( name="USUARIOS" )
-public class Usuario {
+@Table( name="cliente" )
+public class Cliente {
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
-	@Column( name="USU_RUT" )
+	@Column( name="cli_rut" )
 	private Long   rut = null;
-	@Column( name="USU_NOMBRE" )
+	@Column( name="cli_nombre" )
 	private String nombre = null;
-	@Column( name="USU_APELLIDO1" )
+	@Column( name="cli_apellido1" )
 	private String apellido1 = null;
-	@Column( name="USU_APELLIDO2" )
+	@Column( name="cli_apellido2" )
 	private String apellido2 = null;
-	@Column( name="USU_CALLE" )
+	@Column( name="cli_calle" )
 	private String calle = null;
-	@Column( name="USU_COMUNA" )
+	@Column( name="cli_comuna" )
 	private String comuna = null;
-	@Column( name="USU_FECHA_NACIMIENTO" )
+	@Column( name="cli_fecha_nacimiento" )
 	private String fechaNacimiento = null;
-	@Column( name="USU_GENERO" )
+	@Column( name="cli_genero" )
 	private String genero = null;
-	@Column( name="USU_PASSWORD" )
-	private String password = null;
 	@Column( name="USU_EMAIL" )
 	private String email = null;
-	@Column( name="USU_NIVEL" )
+	@Column( name="cli_nivel" )
 	private int    nivel = 0;
 	@Transient
 	private String dv;
-	@Transient
-	private List<Credito> creditos = null;
-	public Usuario() {
+	@OneToMany
+	@JoinColumn( name="cli_id" )
+	private List<Credito> creditos;
+	@OneToMany
+	@JoinColumn( name="cli_id" )
+	private List<Liquidacion> liquidaciones;
+	
+	public Cliente() {
 		
 	}
-	public Usuario(Long id, Long rut, String nombre, String apellido1, String apellido2, String calle, String comuna,
-			String fechaNacimiento, String genero, String password, String email, int nivel) {
+	public Cliente( Long id, Long rut, String nombre, String apellido1, String apellido2, String calle, String comuna,
+			String fechaNacimiento, String genero, String email, int nivel ) {
 		super();
 		this.id = id;
 		this.rut = rut;
@@ -58,7 +64,6 @@ public class Usuario {
 		this.comuna = comuna;
 		this.fechaNacimiento = fechaNacimiento;
 		this.genero = genero;
-		this.password = password;
 		this.email = email;
 		this.nivel = nivel;
 	}
@@ -123,12 +128,6 @@ public class Usuario {
 	public void setGenero(String genero) {
 		this.genero = genero;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -147,17 +146,28 @@ public class Usuario {
 	public void setDv( char d ) {
 		this.dv = calculaDigitoVerificador( this.rut );
 	}
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2="
-				+ apellido2 + ", calle=" + calle + ", comuna=" + comuna + ", fechaNacimiento=" + fechaNacimiento
-				+ ", genero=" + genero + ", password=" + password + ", email=" + email + ", nivel=" + nivel + "]";
-	}
 	public List<Credito> getCreditos() {
 		return creditos;
 	}
 	public void setCreditos(List<Credito> creditos) {
 		this.creditos = creditos;
 	}
-
+	public void addCredito( Credito credito ) {
+		this.creditos.add( credito );
+	}
+	public List<Liquidacion> getLiquidaciones() {
+		return liquidaciones;
+	}
+	public void setLiquidaciones(List<Liquidacion> liquidaciones) {
+		this.liquidaciones = liquidaciones;
+	}
+	public void addLiquidacion( Liquidacion liquidacion ) {
+		this.liquidaciones.add( liquidacion );
+	}
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2="
+				+ apellido2 + ", calle=" + calle + ", comuna=" + comuna + ", fechaNacimiento=" + fechaNacimiento
+				+ ", genero=" + genero + ", email=" + email + ", nivel=" + nivel + "]";
+	}
 }

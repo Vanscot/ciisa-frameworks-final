@@ -11,36 +11,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import cl.ciisa.frameworks.simuladordecreditos.models.Usuario;
-import cl.ciisa.frameworks.simuladordecreditos.repository.UsuarioRepository;
+import cl.ciisa.frameworks.simuladordecreditos.models.Cliente;
+import cl.ciisa.frameworks.simuladordecreditos.repository.ClienteRepository;
 
 @Controller
 @RequestMapping( value="/GUI/usuarios" )
 public class UsuarioGUI {
 
 	@Autowired
-	UsuarioRepository link;
+	ClienteRepository link;
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
 	public String getUsuarios() {
-		List<Usuario> usuarios = new ArrayList<Usuario>();
-		for( Usuario usuario : link.findAll() ) {
-			if( usuario.getNivel() < 1 ) continue;
-			if( usuario.getId() == 1 ) usuario.setPassword( "" );
-			usuarios.add( usuario );
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		for( Cliente cliente : link.findAll() ) {
+			if( cliente.getNivel() < 1 ) continue;
+			clientes.add( cliente );
 		}
 		
 		return "/GUI/usuarios/index";
 	}
 
 	@RequestMapping( value="/usuario/{id}", method=RequestMethod.GET )
-	public Usuario getUsuario( @PathVariable Long id ) {
-		Optional<Usuario> result = link.findById( id );
-		if( ! result.isPresent() ) return new Usuario();
-		if( result.get().getNivel() < 1 ) return new Usuario();
-		Usuario usuario = result.get();
-		if( usuario.getId() == 1 ) usuario.setPassword( "" );
-		return usuario;
+	public Cliente getUsuario( @PathVariable Long id ) {
+		Optional<Cliente> result = link.findById( id );
+		if( ! result.isPresent() ) return new Cliente();
+		if( result.get().getNivel() < 1 ) return new Cliente();
+		Cliente cliente = result.get();
+		return cliente;
 	}
 	/*
 	@RequestMapping( value="/usuarios/usuario/{id}", method=RequestMethod.POST )

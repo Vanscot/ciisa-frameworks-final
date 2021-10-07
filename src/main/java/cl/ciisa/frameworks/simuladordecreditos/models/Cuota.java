@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,7 +16,7 @@ public class Cuota {
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
 	@Column( name="CUO_CREDITO" )
-	private String credito = null;
+	private String nombreCredito = null;
 	@Column( name="CUO_MONTO_INTERES" )
 	private Long   interes = null;
 	@Column( name="CUO_MONTO_CAPITAL" )
@@ -23,13 +25,17 @@ public class Cuota {
 	private String vencimiento = null;
 	@Column( name="CUO_FECHA_PAGO" )
 	private String pago = null;
+	@ManyToOne
+	@JoinColumn( name="cre_id" )
+	private Credito credito;
+
 	public Cuota() {
 		
 	}
-	public Cuota(Long id, String credito, Long interes, Long capital, String vencimiento, String pago) {
+	public Cuota(Long id, String nombreCredito, Long interes, Long capital, String vencimiento, String pago) {
 		super();
 		this.id = id;
-		this.credito = credito;
+		this.nombreCredito = nombreCredito;
 		this.interes = interes;
 		this.capital = capital;
 		this.vencimiento = vencimiento;
@@ -41,11 +47,11 @@ public class Cuota {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getCredito() {
-		return credito;
+	public String getNombreCredito() {
+		return nombreCredito;
 	}
-	public void setCredito(String credito) {
-		this.credito = credito;
+	public void setNombreCredito(String credito) {
+		this.nombreCredito = credito;
 	}
 	public Long getInteres() {
 		return interes;

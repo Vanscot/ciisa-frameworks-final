@@ -7,29 +7,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table( name="CREDITOS" )
+@Table( name="credito" )
 public class Credito {
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
-	@Column( name="CRE_RUT" )
+	@Column( name="cre_rut" )
 	private Long   rut = null;
-	@Column( name="CRE_NOMBRE" )
+	@Column( name="cre_nombre" )
 	private String nombre = null;
-	@Column( name="CRE_MONTO" )
+	@Column( name="cre_monto" )
 	private Long   monto = null;
-	@Column( name="CRE_TASA" )
+	@Column( name="cre_tasa" )
 	private float  tasa  = 0;
-	@Column( name="CRE_TIPO" )
+	@Column( name="cre_tipo" )
 	private String tipo = null;
-	@Column( name="CRE_SEGUROS" )
+	@Column( name="cre_seguro" )
 	private Long   seguros = null;
-	@Transient
-	private List<Cuota> cuotas = null;
+	@OneToMany( mappedBy="credito" )
+	private List<Cuota> cuotas;
+	@ManyToOne
+	@JoinColumn( name="cli_id")
+	private Cliente cliente;
 	
 	public Credito() {
 		
@@ -91,5 +96,8 @@ public class Credito {
 	}
 	public void setCuotas(List<Cuota> cuotas) {
 		this.cuotas = cuotas;
+	}
+	public void addCuotas( Cuota cuota ) {
+		this.cuotas.add( cuota );
 	}
 }
