@@ -1,5 +1,6 @@
 package cl.ciisa.frameworks.simuladordecreditos.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table( name="credito" )
@@ -23,21 +25,23 @@ public class Credito {
 	@Column( name="cre_nombre" )
 	private String nombre = null;
 	@Column( name="cre_monto" )
-	private Long   monto = null;
+	private Long   monto = (long) 0;
 	@Column( name="cre_tasa" )
 	private float  tasa  = 0;
 	@Column( name="cre_tipo" )
 	private String tipo = null;
 	@Column( name="cre_seguro" )
 	private Long   seguros = null;
-	@OneToMany( mappedBy="credito" )
+	@OneToMany
+	@JoinColumn( name="cre_id" )
 	private List<Cuota> cuotas;
 	@ManyToOne
 	@JoinColumn( name="cli_id")
 	private Cliente cliente;
+	@Transient
+	private Long cliId;
 	
-	public Credito() {
-		
+	public Credito() {		
 	}
 	public Credito(Long id, Long rut, String nombre, Long monto, float tasa, String tipo, Long seguros) {
 		super();
@@ -98,6 +102,12 @@ public class Credito {
 		this.cuotas = cuotas;
 	}
 	public void addCuotas( Cuota cuota ) {
+		if( this.cuotas == null ) this.cuotas = new ArrayList<Cuota>();
 		this.cuotas.add( cuota );
+	}
+	public void setCliId( Long cliId ) {
+	}
+	public Long getCliId() {
+		return this.cliente != null ? this.cliente.getId() : null;
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table( name="simulacion" )
@@ -21,7 +22,7 @@ public class Simulacion {
 		@Column( name="sim_nombre" )
 		private String nombre = null;
 		@Column( name="sim_monto" )
-		private Long   monto = null;
+		private Long   monto = (long) 0;
 		@Column( name="sim_tasa" )
 		private float  tasa  = 0;
 		@Column( name="sim_tipo" )
@@ -37,9 +38,10 @@ public class Simulacion {
 		@ManyToOne
 		@JoinColumn( name="cli_id")
 		private Cliente cliente;
+		@Transient
+		private Long cliId;
 
 		public Simulacion() {
-			
 		}
 		public Simulacion(Long id, Long rut, String nombre, Long monto, float tasa, String tipo, Long seguros, int cuotas, Long montoCuota, Long montoCuotaAno ) {
 			super();
@@ -129,5 +131,10 @@ public class Simulacion {
 
 		public void setMontoCuotaAno(Long montoCuotaAno) {
 			this.montoCuotaAno = montoCuotaAno;
+		}
+		public void setCliId( Long cliId ) {
+		}
+		public Long getCliId() {
+			return this.cliente != null ? this.cliente.getId() : null;
 		}
 }

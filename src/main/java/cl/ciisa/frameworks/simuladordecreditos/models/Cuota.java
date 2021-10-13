@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table( name="CUOTAS" )
@@ -15,29 +16,26 @@ public class Cuota {
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
-	@Column( name="CUO_CREDITO" )
-	private String nombreCredito = null;
-	@Column( name="CUO_MONTO_INTERES" )
-	private Long   interes = null;
-	@Column( name="CUO_MONTO_CAPITAL" )
-	private Long   capital  = null;
-	@Column( name="CUO_FECHA_VENCIMIENTO" )
+	@Column( name="cuo_monto" )
+	private Long   monto  = (long) 0;
+	@Column( name="cuo_vencimiento" )
 	private String vencimiento = null;
-	@Column( name="CUO_FECHA_PAGO" )
-	private String pago = null;
+	@Column( name="cuo_pago" )
+	private String pago = "";
 	@ManyToOne
 	@JoinColumn( name="cre_id" )
 	private Credito credito;
+	@Transient
+	private Long creId;
+	@Transient
+	private Long cliId;
 
 	public Cuota() {
-		
 	}
-	public Cuota(Long id, String nombreCredito, Long interes, Long capital, String vencimiento, String pago) {
+	public Cuota(Long id, Long monto, String vencimiento, String pago) {
 		super();
 		this.id = id;
-		this.nombreCredito = nombreCredito;
-		this.interes = interes;
-		this.capital = capital;
+		this.monto = monto;
 		this.vencimiento = vencimiento;
 		this.pago = pago;
 	}
@@ -47,23 +45,11 @@ public class Cuota {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getNombreCredito() {
-		return nombreCredito;
+	public Long getMonto() {
+		return monto;
 	}
-	public void setNombreCredito(String credito) {
-		this.nombreCredito = credito;
-	}
-	public Long getInteres() {
-		return interes;
-	}
-	public void setInteres(Long interes) {
-		this.interes = interes;
-	}
-	public Long getCapital() {
-		return capital;
-	}
-	public void setCapital(Long capital) {
-		this.capital = capital;
+	public void setMonto(Long monto) {
+		this.monto = monto;
 	}
 	public String getVencimiento() {
 		return vencimiento;
@@ -76,6 +62,16 @@ public class Cuota {
 	}
 	public void setPago(String pago) {
 		this.pago = pago;
+	}
+	public void setCreId( Long creId ) {
+	}
+	public Long getCreId() {
+		return this.credito != null ? this.credito.getId() : null;
+	}
+	public void setCliId( Long cliId ) {
+	}
+	public Long getCliId() {
+		return this.credito != null ? this.credito.getCliId() : null;
 	}
 }
 

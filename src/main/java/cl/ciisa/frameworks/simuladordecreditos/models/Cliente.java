@@ -1,7 +1,6 @@
 package cl.ciisa.frameworks.simuladordecreditos.models;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class Cliente {
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Long   id = null;
 	@Column( name="cli_rut" )
-	private Long   rut = null;
+	private Long   rut = (long) 0;
 	@Column( name="cli_nombre" )
 	private String nombre = null;
 	@Column( name="cli_apellido1" )
@@ -38,8 +37,6 @@ public class Cliente {
 	private String genero = null;
 	@Column( name="USU_EMAIL" )
 	private String email = null;
-	@Column( name="cli_nivel" )
-	private int    nivel = 0;
 	@Transient
 	private String dv;
 	@OneToMany
@@ -48,12 +45,14 @@ public class Cliente {
 	@OneToMany
 	@JoinColumn( name="cli_id" )
 	private List<Liquidacion> liquidaciones;
+	@OneToMany
+	@JoinColumn( name="cli_id" )
+	private List<Simulacion> simulaciones;
 	
 	public Cliente() {
-		
 	}
 	public Cliente( Long id, Long rut, String nombre, String apellido1, String apellido2, String calle, String comuna,
-			String fechaNacimiento, String genero, String email, int nivel ) {
+			String fechaNacimiento, String genero, String email ) {
 		super();
 		this.id = id;
 		this.rut = rut;
@@ -65,7 +64,6 @@ public class Cliente {
 		this.fechaNacimiento = fechaNacimiento;
 		this.genero = genero;
 		this.email = email;
-		this.nivel = nivel;
 	}
 	public String calculaDigitoVerificador( long rut ) {
 		int m = 0, s = 1;
@@ -134,17 +132,11 @@ public class Cliente {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getNivel() {
-		return nivel;
-	}
-	public void setNivel(int nivel) {
-		this.nivel = nivel;
-	}
 	public String getDv() {
 		return calculaDigitoVerificador( this.rut );
 	}
 	public void setDv( char d ) {
-		this.dv = calculaDigitoVerificador( this.rut );
+		this.dv = this.rut != null ? calculaDigitoVerificador( this.rut ) : "";
 	}
 	public List<Credito> getCreditos() {
 		return creditos;
@@ -164,10 +156,19 @@ public class Cliente {
 	public void addLiquidacion( Liquidacion liquidacion ) {
 		this.liquidaciones.add( liquidacion );
 	}
+	public List<Simulacion> getSimulaciones() {
+		return simulaciones;
+	}
+	public void setSimulaciones(List<Simulacion> simulaciones ) {
+		this.simulaciones = simulaciones;
+	}
+	public void addSimulacion( Simulacion simulacion ) {
+		this.simulaciones.add( simulacion );
+	}
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2="
 				+ apellido2 + ", calle=" + calle + ", comuna=" + comuna + ", fechaNacimiento=" + fechaNacimiento
-				+ ", genero=" + genero + ", email=" + email + ", nivel=" + nivel + "]";
+				+ ", genero=" + genero + ", email=" + email + "]";
 	}
 }

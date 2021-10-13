@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table( name="liquidacion" )
@@ -22,13 +23,14 @@ public class Liquidacion {
 	@Column( name="liq_mes" )
 	private int    mes = 0;
 	@Column( name="liq_monto" )
-	private Long   monto = null;
+	private Long   monto = (long) 0;
 	@ManyToOne
 	@JoinColumn( name="cli_id" )
 	private Cliente cliente;
+	@Transient
+	private Long cliId;
 	
-	public Liquidacion() {
-		
+	public Liquidacion() {	
 	}
 	public Liquidacion(Long id, Long rut, int ano, int mes, Long monto) {
 		super();
@@ -68,6 +70,10 @@ public class Liquidacion {
 	public void setMonto(Long monto) {
 		this.monto = monto;
 	}
-
+	public void setCliId( Long cliId ) {
+	}
+	public Long getCliId() {
+		return this.cliente != null ? this.cliente.getId() : null;
+	}
 	
 }
